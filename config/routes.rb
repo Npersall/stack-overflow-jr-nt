@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   resources :questions
   resources :users
 
-  get '/register' => 'users#new'
-  post '/register' => 'users#create'
+  get '/register' => 'sessions#new'
+  post '/register' => 'sessions#create', :as => :create_user
 
   get '/login', to: 'sessions#login'
   post '/login', to: 'sessions#login_attempt'
