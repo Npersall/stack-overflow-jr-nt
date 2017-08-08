@@ -1,0 +1,7 @@
+<%= @user.username %>
+
+<% @user.questions.each do |question| %>
+  <ul>
+    <li><%= link_to question.title, question_path %>    </li>
+  </ul>
+<% end %>

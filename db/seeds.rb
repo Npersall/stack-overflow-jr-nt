@@ -1,7 +1,43 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+require 'faker'
+
+num_users = 5
+
+num_users.times do |n|
+  user1 = User.create(username: Faker::Name.name, email: Faker::Internet.email, password: 'password')
+  user2 = User.create(username: Faker::Name.name, email: Faker::Internet.email, password: 'password')
+
+  # first user asks question
+  user1.questions.create(title: "#{user1.username} Question Title", body: "#{user1.username} Question Body")
+
+  # second user answers that question
+  user2.answers.create(body: "#{user2.username} Answer Body", question: Question.last, best_answer: false )
+end
+
+users = User.all
+questions = Question.all
+answers = Answer.all
+
+# create comments for Q & As
+questions.each do |question|
+  # 3 comments from random users
+  question.comments.create(commenter: users.sample, body: Faker::Pokemon.name)
+  question.comments.create(commenter: users.sample, body: Faker::Pokemon.name)
+  question.comments.create(commenter: users.sample, body: Faker::Pokemon.name)
+
+  # 3 votes from random users
+  question.votes.create(voter: users.sample, vote_direction: 1)
+  question.votes.create(voter: users.sample, vote_direction: 1)
+  question.votes.create(voter: users.sample, vote_direction: -1)
+end
+
+answers.each do |answer|
+  # 3 comments from random users
+  answer.comments.create(commenter: users.sample, body: Faker::Pokemon.name)
+  answer.comments.create(commenter: users.sample, body: Faker::Pokemon.name)
+  answer.comments.create(commenter: users.sample, body: Faker::Pokemon.name)
+
+  # 3 votes from random users
+  answer.votes.create(voter: users.sample, vote_direction: 1)
+  answer.votes.create(voter: users.sample, vote_direction: 1)
+  answer.votes.create(voter: users.sample, vote_direction: -1)
+end
